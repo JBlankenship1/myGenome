@@ -1,0 +1,87 @@
+Genome Assembly Implementation Steps
+Jacob Blankenship
+
+Note: All code ran is done with my genome ID (Bc395). It is sometimes completed with a VM (which runs ubuntu)
+and other times is run on the University of Kentucky supercomputer MCC (any code that starts with sbatch is done
+on MCC as the execution is computationally intense). Some softwares utalized and some shell scripts that are 
+ran (.sh files) are not provided in this documentation, but general descriptions of what they do will be provided.
+Finally, some folder or file names could be renamed in between function runnings (such as a file being ran initialy
+as xyz.txt and later renamed and run again with x.txt)
+--------------------------------------------------------------------------------------------------------------------
+
+Next we need to run velvet + spades on our genome and find out which paramaters with the assembler
+software creates the optimal assembled genome (with statistics such as Genome size, # of contigs, N50).
+https://github.com/dzerbino/velvet/tree/master
+
+For reference, a good kmer length can be found with velvet advisor and our summary stats from the .html files
+acting as the input. The kmer length is the average length we believe our contigs should be, with the high the 
+kmer value, the more "complete" and "clean" our assembly is, and the fewer contigs there are left.
+http://dna.med.monash.edu.au/~torsten/velvet_advisor/
+
+Now that an optimal kmer value is found, you can now set a batch to run valvet (called in the shell script)
+This takes in kmer values and step sizes, with the lowest in my case being 77 (my velvet_advisor kmer value) - 40,
+and the highest being 77 + 40. The final value being 10 is the step size, which will check all increments of 10
+between 37 and 107 to find the optimal one:
+sbatch velvetoptimiser.sh MyGenomeID 37 107 10
+
+This returned a kmer value of K = 97. With an assembled genome size of 44,092,031 Bp (base pairs), 6,622 contigs, 
+and an N50 of 22,575.
+
+N50 refers to the contig length in this situation: Take all of your contigs and order them by length,
+then, find out (from longest to shortest) what contig is at the 50% mark. Meaning 50% of the genome is made
+up of as large or larger contigs. That contigs length is the N50 value.
+
+To refine our velvet optimiser, we can rerun it over a shortened range around our better kmer value (97).
+To do this we recalculate our low and high range (low = 97 - 8, high = 97 + 8, as we know 95 is a better kmer
+than 87 and 107) with a step size of 2:
+sbatch velvetoptimiser.sh MyGenomeID 89 105 2
+
+This returned a kmer value of K = 95. With an assembled genome size of 44,001,401 Bp, 5,958 contigs, and an
+N50 of 24,881.
+--------------------------------------------------------------------------------------------------------------------
+
+Now with velvet done, we can also run spade (another assembler software). This code is also ran with a shell script:
+sbatch spades.sh . Bc395
+
+Inside the shell script there were two options implemented in terms of the data inputted. With both paired and 
+both unpaired reads inputted, and with only paired reeds inputted.
+
+The former of the two (paired + unpaired) returned an assembled genome size 45,755,384 Bp, 15,452 contigs, and an
+N50 of 58,752.
+
+The latter (paired only) returned an assembled genome size of 43,890,846 Bp, 5,527 contigs, and an N50 of 73,820.
+43890846	5527	73820
+To determine the optimal assembly, we must look at our outputted values. Typically, the more base pairs, the 
+more genome there is to work with, and therefore the stronger genome is present. Also, a small value of contigs is
+best, as it means that there are less groupings for our data, and more of the genome has "found" a home. Finally, 
+a large N50 is great, as it tells us that more of the genome can be formed by our largest contigs.
+
+With this being said, I chose the spades paired only assembly, as it had the best contig value, and by far the best
+N50 value, with a similar Bp value.
+
+To find the fold coverage of this chosen assembly, we can divide the total base pairs of both the forward and 
+backward reads, and divide by the typical genome size of my organism (in this case it's Pyricularia oryzae). 
+If we do this, we get ~37x, meaning that my datasize reads my organism 37x over. This is good redundancy, as 
+it can spotlight seqencing and tracking errors that were done when recording my genome.
+
+It should also be noted that the returned spades files includes a saffolds.gfa graph file, which is where 
+my genome visual images are from. This is visualized with bandage as the software, and said graph file as the input.
+--------------------------------------------------------------------------------------------------------------------
+
+To clean up data for a submission to the National Center for Biotechnology Information (NCBI) some
+final cleaning must be done.
+
+First with a pearl file, I can iterate through my fasta file and rename headers with incremental contig names.
+For my case, I will use the scaffolds.fasta file in the outputted spades directory
+perl SimpleFastaHeaders.pl scaffolds.fasta Bc395
+
+To further comply with NCBI's requirements, we can use Bc395_newheader.fasta (outputted after running 
+SimpleFastaHeaders.pl) to run the genome post processing shell script. This will identify adaptor contamination, 
+remove contaminating sequences and cull sequences less than 200 nt in length:
+
+sbatch GenomePostProcess.sh Bc395_newheader.fasta
+
+This will create a final usable file: Bc395_final.fasta, which can then be submitted to NCBI
+
+
+

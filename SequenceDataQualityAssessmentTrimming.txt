@@ -1,0 +1,41 @@
+Sequence Data, Quality Assessment and Trimming Implementation Steps
+Jacob Blankenship
+
+Note: All code ran is done with my genome ID (Bc395). It is sometimes completed with a VM (which runs ubuntu)
+and other times is run on the University of Kentucky supercomputer MCC (any code that starts with sbatch is done
+on MCC as the execution is computationally intense). Some softwares utalized and some shell scripts that are 
+ran (.sh files) are not provided in this documentation, but general descriptions of what they do will be provided.
+Finally, some folder or file names could be renamed in between function runnings (such as a file being ran initialy
+as xyz.txt and later renamed and run again with x.txt)
+--------------------------------------------------------------------------------------------------------------------
+
+Download a compressed archive containing the files we will need for class.
+The workshop materials contain the materials needed to run our code, such as an assembly genome of a similar
+organism to get a busco score. We access it with a tarball: 
+wget https://www.cs.uky.edu/~acta225/CS485/workshop-materials.tar.xz Links to an external site.
+
+Downloading the actual software to run our files on are needed as well, and are gotten with a setup shell script
+wget https://www.cs.uky.edu/~acta225/CS485/vm_soft_setup.sh
+--------------------------------------------------------------------------------------------------------------------
+
+With all of our software and files ready, we can start sequencing
+Run fastqc on both forward and reverse reads:
+fastqc Bc395_1.fq.gz Bc395_2.fq.gz -o ~/sequences
+
+Will return .html files, that can be downloaded and opened in a web browser to view.
+This can be done with scp:
+scp jrbl245@jrbl245.cs.uky.edu:Bc395_1.fastqc.html .
+scp jrbl245@jrbl245.cs.uky.edu:Bc395_2.fastqc.html .
+
+Viewed html files include data on provided screenshots such as summary statistics and adaptor content.
+We next need to run trimmomatic to trim off adaptor contamination. Documentation on trimmomatic:
+http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf
+java -jar trimmomatic-0.38.jar PE -threads 2 -phred33 -trimlog Br80_errorlog.txt Bc395_1.fq.gz 
+Bc395_2.fq.gz Bc395_1_paired.fastq Bc395_2_paired.fastq ILLUMINACLIP:adaptors.fa:2:30:10
+SLIDINGWINDOW:20:20 MINLEN:125
+
+This will return four fastq files:
+Bc395_1.fq.gz Bc395_2.fq.gz Bc395_1_paired.fastq Bc395_2_paired.fastq
+With the paired reads including both the forward and reverse reads.
+
+

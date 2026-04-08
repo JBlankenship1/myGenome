@@ -1,6 +1,11 @@
 # myGenome
 Repo to hold Applied Biometrics materials in relation to Pyricularia oryzae seqencing project. Needs Readme to include file locations!
 
+**Documentation Implementation Steps:**
+
+  1. SequenceDataQualityAssessmentTrimming.txt
+  2. GenomeAssembly.txt
+  
 
 **Summary of all warning (orange) and error (red) messages for raw data:**
 
