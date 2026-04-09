@@ -1,9 +1,9 @@
 # myGenome
 Repo to hold Applied Biometrics materials in relation to Pyricularia oryzae seqencing project. Needs Readme to include file locations!
 
-| **SUBID**    | **BioProject** | **BioSample** | **Accession**    | **Organism**                 |
-|-------------|----------------|---------------|------------------|------------------------------|
-| SUB16053105 | PRJNA926786    | SAMN55302557  | JBWXUS000000000  | Pyricularia oryzae Bc395     |
+| **SUBID**    | **BioProject** | **BioSample** | **Accession**    | **Organism**           | **Sample Name** |
+|-------------|----------------|---------------|------------------|------------------------|-----------------|
+| SUB16053105 | PRJNA926786    | SAMN55302557  | JBWXUS000000000  | Pyricularia oryzae     | Bc395           |
 
 **Documentation Implementation Steps:**
 
