@@ -9,6 +9,7 @@ Repo to hold Applied Biometrics materials in relation to Pyricularia oryzae seqe
 
   1. SequenceDataQualityAssessmentTrimming.txt
   2. GenomeAssembly.txt
+  3. GenomePrediction.txt
   
 
 **Summary of all warning (orange) and error (red) messages for raw data:**
