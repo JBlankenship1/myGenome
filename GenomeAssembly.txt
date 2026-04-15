@@ -81,7 +81,15 @@ remove contaminating sequences and cull sequences less than 200 nt in length:
 
 sbatch GenomePostProcess.sh Bc395_newheader.fasta
 
-This will create a final usable file: Bc395_final.fasta, which can then be submitted to NCBI
+This will create a final usable file: Bc395_final.fasta, which can then be submitted to NCBI.
 
+Our final step will be to run BUSCO on our final fasta file. This will compare our current genome to
+the genome of a fungal phylum (same as our own) called odb10_ascomycota. It will give a score that represents
+the total orthologs match between both organisms.
 
+sbatch BuscoSingularity.sh Bc395_final.fasta
 
+This returns among other things a score of 98.30%, meaning that theres a match between 98.3% of orthologs.
+This is a good value, as it is predicted that similar organisms would have a high BUSCO score, so we can move on.
+
+NOTE: ASK PROFESSOR ON WHAT WE INPUTTED FOR "BUSCO score (complete + fragmented) (%)"

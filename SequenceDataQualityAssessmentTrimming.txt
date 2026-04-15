@@ -1,7 +1,7 @@
 Sequence Data, Quality Assessment and Trimming Implementation Steps
 Jacob Blankenship
 
-Note: All code ran is done with my genome ID (Bc395). It is sometimes completed with a VM (which runs ubuntu)
+Note: All code ran is done with my genome ID (Bc395, nicknamed "Bernard"). It is sometimes completed with a VM (which runs ubuntu)
 and other times is run on the University of Kentucky supercomputer MCC (any code that starts with sbatch is done
 on MCC as the execution is computationally intense). Some softwares utalized and some shell scripts that are 
 ran (.sh files) are not provided in this documentation, but general descriptions of what they do will be provided.

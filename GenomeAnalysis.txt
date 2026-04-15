@@ -9,10 +9,7 @@ Finally, some folder or file names could be renamed in between function runnings
 as xyz.txt and later renamed and run again with x.txt)
 --------------------------------------------------------------------------------------------------------------------
 
+Now with post-processing complete, and our most clean genome, we can run genome prediction with our final
+fasta file.
 
-
-
-
-awk '{print $9}' SNAP_Bc395/Bc395-snap.gff2 | sort -u | wc -l
-grep "^# start gene" AUGUSTUS_Bc395/Bc395-augustus.gff3 | wc -l
-awk '$3 ~ "gene"' Bc395_final.all.gff | wc -l
+BUSCO:
