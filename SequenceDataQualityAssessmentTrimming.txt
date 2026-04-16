@@ -1,5 +1,6 @@
 Sequence Data, Quality Assessment and Trimming Implementation Steps
 Jacob Blankenship
+Software: Trimmomatic
 
 Note: All code ran is done with my genome ID (Bc395, nicknamed "Bernard"). It is sometimes completed with a VM (which runs ubuntu)
 and other times is run on the University of Kentucky supercomputer MCC (any code that starts with sbatch is done

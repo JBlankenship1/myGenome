@@ -1,5 +1,6 @@
 Genome Prediction Implementation Steps
 Jacob Blankenship
+Software: SNAP, AUGUSTUS, MAKER
 
 Note: All code ran is done with my genome ID (Bc395). It is sometimes completed with a VM (which runs ubuntu)
 and other times is run on the University of Kentucky supercomputer MCC (any code that starts with sbatch is done
@@ -12,4 +13,123 @@ as xyz.txt and later renamed and run again with x.txt)
 Now with post-processing complete, and our most clean genome, we can run genome prediction with our final
 fasta file.
 
-BUSCO:
+MyGenome Gene Prediction
+
+    Records steps used to generate the HMM file used for gene prediction (1 pt)
+    Summarize outputs from snap and AUGUSTUS and MAKER gene predictions (#s of gene identified) (1 pt) 
+    Include a screenshot of an IGV window showing a few MAKER gene models (1 pt)
+
+5. BLASTing MyGenome
+
+    Record code used to perform the various queries of the genome (1 pt)
+    Summarize the findings (1 pt)
+    Upload i) outputs of your command line queries of the MyGenome; and ii) the csv file with the list of mitochondrial contigs that will be uploaded to NCBI to GitHub and use a link to point to these files at appropriate points in the notebook (1 pt).
+
+
+To first start with Gene Analysis, we need to access a organisms genomes that are similar to Pyricularia oryzae
+(Bernard). To do this we can pull in B71Ref2.gff3 and B71Ref2.fasta, which is an organism with complete
+gene analysis.
+
+The .gff3 file contains information about the positions of features on the B71Ref2 genome in a columnar format.
+The columns correspond to: Contig#, feature source, type of feature, start position, end position, quality
+score, strand, reading frame, and attributes.
+
+To get a file with both gene annotations and genome sequences, we can append the two together:
+echo '##FASTA' | cat B71Ref2_a0.3.gff3 - B71Ref2.fasta > B71Ref2.gff3
+
+Now, to only extract the genome, transcript, and protein sequences from these genes, we can run fathom
+to keep 1000 base pairs of context as well as flip reversed sequences (3-prime -> 5-prime):
+fathom uni.ann uni.dna -export 1000 -plus
+
+Now with a formatted dataset, we can train to get our .hmm file with forge:
+forge export.ann export.dna
+
+The final step is to format our exports to a singluar .hmm file:
+hmm-assembler.pl Moryzae . > Moryzae.hmm
+--------------------------------------------------------------------------------------------------------------------
+
+Now that we have our parameter file Moryzae.hmm, we can start predicting genes with SNAP.
+
+https://github.com/KorfLab/SNAP
+
+This will return our Moryzae.hmm file, which we can now run with our cleaned fasta file:
+snap-hmm Moryzae.hmm Bc395_final.fasta > Bc395-snap.zff
+
+The .zff file is a text document that lists the coordinates and of predicted features snaps with 
+SNAPs Markov model gene-finders. SNAP now trained, can determine the statistical properties of each DNA 
+sequence to infer features such as start codons, splice junctions,and untranslated regions, and apply that to
+our genome.
+
+We can compute the .zff files statistics with fathom:
+fathom Bc395-snap.zff Bc395.fasta -gene-stats
+
+To finalize SNAP, we need to create a .gff2 file, similarly to the .gff3 file we used to train SNAP:
+snap-hmm Moryzae.hmm Bc395_final.fasta -gff > Bc395-snap.gff2
+We will use this file to visualize our predicted genes in a graphical browser.
+--------------------------------------------------------------------------------------------------------------------
+
+Augustus is similar to SNAP, but without the hassle of bringing in your own species
+file, or needing to seperately train and evaluate your genome. We can specify our
+species Magnaporthe grisea (same as Pyricularia oryzae), and with single stands being set
+to true, Augustus will look for gene matches from opposite pairs. Progress being set to true
+is just a visual feature, and does not affect the genome:
+augustus --species=magnaporthe_grisea --gff3=on \ --singlestrand=true --progress=true \
+Bc395_final.fasta > Bc395-augustus.gff3
+
+We now have a similar .gff3 file.
+--------------------------------------------------------------------------------------------------------------------
+
+Finally, we can run MAKER, which will take in our organisms FASTA file and alongside SNAP's and AUGUSTUS's .gff 
+file, will make its own .gff3 file.
+
+We can create our maker config files with singularity:
+singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinf maker -CTL
+
+Which give us maker_exe.ctl, maker_bopts.ctl, and maker_opts.ctl. These files lists the locations of the programs 
+MAKER uses, sets thresholds for accepting alignments estimations and protein evidence, and gives a description
+of the data to be used as inputs to MAKER, respectively.
+
+To configure our files, we need to do more than add input parameters in the terminal, as MAKER has too many to 
+account for. With maker_opts.ctl, we can hand edit each nessesary parameter:
+nano maker_opts.ctl 
+
+Inside maker_opts.ctl, we can edit these parameters:
+
+genome=Bc395_final.fasta
+    To set my genome to be my FASTA file.
+model_org=
+    Setting to blank to turn off repeat masking, which saves runtime
+repeat_protein= 
+    Setting to blank to turn off repeat protein searching, which saves runtime
+snaphmm=Moryzae.hmm
+    Baseline file of similar organism used to train SNAP model
+ugustus_species=magnaporthe_grisea
+    Organism name used for AUGUSTUS
+keep_preds=1
+    Keeps ab initio gene predictions in the output .gff3, even if there is no estimate or 
+    related-organism evidence for those predictions.
+We then can save the file.
+
+Now that our MAKER parameter are configured, we still need to add some outside genome FASTA files to improve
+estimates and gene predictions. These files are:
+ncbi-cds-Magnaporthe_organism.fasta
+ncbi-protein-Magnaporthe_organism.fasta
+
+We can then open maker_opts.ctl to finish our configuration:
+protein=ncbi-protein-Magnaporthe_organism.fasta
+    Sets our protein to be the protein fasta file of outside genome
+We then can save the file.
+
+Finally, with maker.sh, which will call our 3 .ctl files, we can sent a batch up and return our 
+MAKER gene prediction:
+sbatch maker.sh Bc395_final.fasta
+
+This will return individual genes in individual directories. To sharpen this up to a usable format, we can
+get gff_merge:
+singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinf gff3_merge
+
+And then run it to combine our various genes into a single .gff file (just like with SNAP and AUGUSTUS)
+gff3_merge -d Bc395_final.maker.output/Bc395_final_master_datastore_index.log \
+-o Bc395-maker.gff3
+
+We now have .gff files for SNAP, AUGUSTUS, and MAKER.

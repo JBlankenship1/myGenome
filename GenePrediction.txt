@@ -9,8 +9,14 @@ Finally, some folder or file names could be renamed in between function runnings
 as xyz.txt and later renamed and run again with x.txt)
 --------------------------------------------------------------------------------------------------------------------
 
-
-
+record the methods and code you used
+Summarize #s of predicted genes from snap and AUGUSTUS
+Include screen shot of IGV browser window showing an example of a gene predicted only by snap
+Include screen shot of IGV browser window showing an example of a gene predicted only by AUGUSTUS
+Include screen shot of a gene where snap and AUGUSTUS predict the same exon/intron structure
+Include screen shot of a gene where snap and AUGUSTUS predict a different exon/intron structure
+Summarize # of predicted genes from your MAKER run
+Include screen shot of a gene where a gene was successfully predicted by snap, augustus, and maker and there is external evidence that the prediction is correct
 
 
 awk '{print $9}' SNAP_Bc395/Bc395-snap.gff2 | sort -u | wc -l
