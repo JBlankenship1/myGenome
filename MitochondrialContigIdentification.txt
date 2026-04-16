@@ -1,4 +1,4 @@
-Structural Genome Annotation Steps
+Mitochondrial Contig Identification Steps
 Jacob Blankenship
 SOFTWARE: BLAST
 
@@ -10,4 +10,30 @@ Finally, some folder or file names could be renamed in between function runnings
 as xyz.txt and later renamed and run again with x.txt)
 --------------------------------------------------------------------------------------------------------------------
 
+With our complete genome, one of the things that is needed for our NCBI submission is the mitochondrial contigs.
+To get said mitochondrial contigs, we can run BLAST on our fasta file, by comparing it to the fasta file of a 
+similar organsim (in this case a file called MoMitochondrion.fasta)
 BLAST:
+
+1. Copy MoMitochondrion.fasta sequence from /project/farman_s26cs480/RESOURCES
+
+2. BLAST the MoMitochondrion.fasta sequence against your final genome assembly using output format 6 with specific column selections:
+
+blastn -query MoMitochondrion.fasta -subject MyGenome_final.fasta -evalue 1e-50 -max_target_seqs 20000 -outfmt '6 qseqid sseqid slen length qstart qend sstart send btop' -out MoMitochondrion.MyGenome.BLAST
+
+This is the basic command. But on MCC, we have to run BLAST using singularity:
+singularity run --app blast2120 /share/singularity/images/ccs/conda/amd-conda1-centos8.sinf blastn 
+-query MoMitochondrion.fasta -subject Bc395_final.fasta -evalue 1e-50 -max_target_seqs 20000 -outfmt 
+'6 qseqid sseqid slen length qstart qend sstart send btop' -out MoMitochondrion.Bc395.BLAST
+
+Some of the inputs are the envirnoment image of amd-conda1-centos8.sinf, the blastn software, the comparable
+genome assembly of MoMitochondrion.fasta and using at the query, and using our final fasta file as the subject of
+the BLAST run, a statistical filter of 10^-50, with a max of 20000 sequences at a time. The final outputs are all
+of the datapoints for which statistics we want to display (such as the length and start of the contig), we will then
+write this output to a BLAST file.
+
+We can use our BLAST file to simplify our data even more to a workable NCBI submission. This is selecting only 
+contigs with mitochondrial genome representing 90% or more of said contig, and writing to a .csv file
+awk '$4/$3 >= 0.9 {print $2 ",mitochondrion"}' MoMitochondrion.Bc395.BLAST > Bc395_mitochondrion.csv
+
+This .csv file can now be submitted to NCBI, and is listed in the Mitochondiral Contig Identification folder.
