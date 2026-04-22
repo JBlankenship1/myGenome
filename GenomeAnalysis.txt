@@ -135,7 +135,7 @@ gff3_merge -d Bc395_final.maker.output/Bc395_final_master_datastore_index.log \
 We now have .gff files for SNAP, AUGUSTUS, and MAKER.
 
 To find the genes of SNAP, AUGUSTUS, and MAKER, we can run search functions to count gene text instances:
-awk '{print $9}' Bc395-snap.gff2 | sort -u | wc -l
+awk '{print $9}' Bc395-snap.gff3 | sort -u | wc -l
 This looks at the 10th column which prints the gene, and sorts them (this removes duplicate), 
 and then finally counts the unique genes. SNAP returned 12740 genes.
 
@@ -143,7 +143,7 @@ grep "^# start gene" AUGUSTUS_Bc395/Bc395-augustus.gff3 | wc -l
 This looks for the phrase "start gene" at the beginning of the line and counts the returned lines.
 AUGUSTUS returned 17691 genes.
 
-awk '$3 ~ "gene"' maker-annotations.gff | wc -l
+awk '$3 ~ "gene"' MAKER_Bc395/Bc395-maker.gff3 | wc -l
 This looks at the 4th column for a value that contains the tag "gene" and counts the returned lines.
 MAKER returned 13196 genes.
 
@@ -151,7 +151,6 @@ With simple statistics and .gff files for all of our genome prediction models, w
 predictions with IGV. The Integrative Genomics Viewer (IGV) is a high-performance visualization tool for 
 interactive exploration of large, integrated genomic datasets. It supports a wide variety of data types, 
 including array-based and next-generation sequence data, and genomic annotations.
+--------------------------------------------------------------------------------------------------------------------
 
-
-
-
+Screenshots of the unique SNAP, AUGUSTUS, and MAKER genes can be found in the Genome Analysis folder.

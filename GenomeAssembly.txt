@@ -93,4 +93,6 @@ sbatch BuscoSingularity.sh Bc395_final.fasta
 This returns among other things a score of 98.30%, meaning that theres a match between 98.3% of orthologs.
 This is a good value, as it is predicted that similar organisms would have a high BUSCO score, so we can move on.
 
-NOTE: ASK PROFESSOR ON WHAT WE INPUTTED FOR "BUSCO score (complete + fragmented) (%)"
+We can also grab the completed & fragmented busco score, which includes genes that were partially found as a match
+to our comparison organism. This value is slightly higher, at 98.5%.
+

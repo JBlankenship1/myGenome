@@ -1,4 +1,4 @@
-Sequence Data, Quality Assessment and Trimming Implementation Steps
+Gene Trimming Implementation Steps
 Jacob Blankenship
 Software: Trimmomatic
 
