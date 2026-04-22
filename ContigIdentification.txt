@@ -1,4 +1,4 @@
-Mitochondrial Contig Identification Steps
+Contig Identification Steps
 Jacob Blankenship
 SOFTWARE: BLAST
 
@@ -37,3 +37,17 @@ contigs with mitochondrial genome representing 90% or more of said contig, and w
 awk '$4/$3 >= 0.9 {print $2 ",mitochondrion"}' MoMitochondrion.Bc395.BLAST > Bc395_mitochondrion.csv
 
 This .csv file can now be submitted to NCBI, and is listed in the Mitochondiral Contig Identification folder.
+--------------------------------------------------------------------------------------------------------------------
+
+awk '$2 ~ "contig" {sub(/~.*/, "", $2); print $2}' Blast_Bc395/B71.MyBc395.BLAST | sort -u > matchcontigs.txt
+1661
+
+awk '/contig/ {gsub(/^>/, "", $1); sub(/~.*/, "", $1); print $1}' Bc395_Fasta_Files/Bc395_final.fasta | sort -u > totalcontigs.txt
+2991
+
+echo $(( $(wc -l < totalcontigs.txt) - $(wc -l < matchcontigs.txt) ))
+1330
+
+grep -Fxv -f matchcontigs.txt totalcontigs.txt
+Returns list of non-matching contigs
+

@@ -1,6 +1,6 @@
 Genome Prediction Implementation Steps
 Jacob Blankenship
-Software: SNAP, AUGUSTUS, MAKER
+Software: SNAP, AUGUSTUS, MAKER, IGV
 
 Note: All code ran is done with my genome ID (Bc395). It is sometimes completed with a VM (which runs ubuntu)
 and other times is run on the University of Kentucky supercomputer MCC (any code that starts with sbatch is done
@@ -143,9 +143,15 @@ grep "^# start gene" AUGUSTUS_Bc395/Bc395-augustus.gff3 | wc -l
 This looks for the phrase "start gene" at the beginning of the line and counts the returned lines.
 AUGUSTUS returned 17691 genes.
 
-awk '$3 ~ "gene"' Bc395_final.all.gff | wc -l
+awk '$3 ~ "gene"' maker-annotations.gff | wc -l
 This looks at the 4th column for a value that contains the tag "gene" and counts the returned lines.
 MAKER returned 13196 genes.
+
+With simple statistics and .gff files for all of our genome prediction models, we can now visualize said 
+predictions with IGV. The Integrative Genomics Viewer (IGV) is a high-performance visualization tool for 
+interactive exploration of large, integrated genomic datasets. It supports a wide variety of data types, 
+including array-based and next-generation sequence data, and genomic annotations.
+
 
 
 
