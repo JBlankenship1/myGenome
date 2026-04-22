@@ -1,59 +1,86 @@
 # myGenome
-Repo to hold Applied Biometrics materials in relation to Pyricularia oryzae seqencing project. Needs Readme to include file locations!
+
+Repo to hold Applied Biometrics materials in relation to Pyricularia oryzae sequencing project.
 
 | **SUBID**    | **BioProject** | **BioSample** | **Accession**    | **Organism**           | **Sample Name** |
 |-------------|----------------|---------------|------------------|------------------------|-----------------|
 | SUB16053105 | PRJNA926786    | SAMN55302557  | JBWXUS000000000  | Pyricularia oryzae     | Bc395           |
 
-**Documentation Implementation Steps:**
+## Documentation Structure
 
-  1. SequenceDataQualityAssessmentTrimming.txt
-  2. GenomeAssembly.txt
-  3. GenomePrediction.txt
-  
+This repository contains comprehensive documentation of the Pyricularia oryzae genome sequencing and analysis pipeline, organized by analysis step:
 
-**Summary of all warning (orange) and error (red) messages for raw data:**
+### 01 - Sequence QC & Trimming
+**File:** `01-sequence-qc-trimming/sequence-qc-trimming.txt`
 
-  [WARNING]Per base sequence content
-  
-  [WARNING]Per sequence GC content
-  
-  [WARNING]Overrepresented sequences
-  
-  [ERROR]Adapter Content
-  
-**Image of a) summary and b) adapter content tabs for raw data**
+Quality assessment and trimming of raw sequencing reads using FastQC and Trimmomatic software.
 
-  Provided in repo named:
-  
-    SummaryContentRaw.png
-    
-    AdapterContentRaw.png
-    
-**Summary of all warning (orange) and error (red) messages for paired reads that remain after trimming**
+**Key outputs:**
+- 5,437,306 cleaned & single-end reads
+- 1,635,036,372 total bases (R1 + R2)
 
-  [WARNING]Per tile sequence quality
-  
-  [WARNING]Per base sequence content
-  
-  [WARNING]Per sequence GC content
-  
-  [WARNING]Sequence Length Distribution
-  
-**Image of a) summary and b) adapter content tabs for trimmed data**
+### 02 - Genome Assembly
+**File:** `02-genome-assembly/genome-assembly.txt`
 
-  Provided in repo named:
-  
-    SummaryContentTrimmed.png
-    
-    AdapterContentTrimmed.png
-    
-**Number of reads (cleaned & single-end)**
+De novo assembly of trimmed reads using Velvet and SPAdes assemblers with optimization for assembly quality metrics.
 
-  5,437,306
-  
-**Total bases (R1 + R2)**
+**Software:** Velvet, SPAdes, Bandage
 
-  1,635,036,372
+**Final assembly statistics:**
+- Genome size: 43,890,846 Bp
+- Number of contigs: 5,527
+- N50: 73,820
+- Coverage: ~37x
+- BUSCO score: 98.30%
 
-  
+### 03 - Contig Identification
+**File:** `03-contig-identification/contig-identification.txt`
+
+Identification of mitochondrial contigs for NCBI submission using BLAST against reference mitochondrial sequences.
+
+**Software:** BLAST
+
+**Results:**
+- 1,661 matching contigs identified
+- 1,330 non-matching contigs
+- Mitochondrial contigs exported to CSV for NCBI submission
+
+### 04 - Gene Prediction
+**File:** `04-gene-prediction/gene-prediction.txt`
+
+Gene prediction and annotation using three complementary algorithms: SNAP, AUGUSTUS, and MAKER with IGV visualization.
+
+**Software:** SNAP, AUGUSTUS, MAKER, IGV
+
+**Gene prediction results:**
+- SNAP: 12,740 predicted genes
+- AUGUSTUS: 17,691 predicted genes
+- MAKER: 13,196 predicted genes (refined with ab initio predictions)
+
+## FastQC Reports
+
+### Raw Data Warnings & Errors
+- [WARNING] Per base sequence content
+- [WARNING] Per sequence GC content
+- [WARNING] Overrepresented sequences
+- [ERROR] Adapter Content
+
+**Images:** `SummaryContentRaw.png`, `AdapterContentRaw.png`
+
+### Trimmed Data Warnings
+- [WARNING] Per tile sequence quality
+- [WARNING] Per base sequence content
+- [WARNING] Per sequence GC content
+- [WARNING] Sequence Length Distribution
+
+**Images:** `SummaryContentTrimmed.png`, `AdapterContentTrimmed.png`
+
+## Additional Notes
+
+All code executed using genome ID: **Bc395** (nicknamed "Bernard")
+
+Execution environments:
+- Local VM (Ubuntu)
+- University of Kentucky Supercomputer (MCC) - for computationally intensive steps (marked with `sbatch` commands)
+
+Some software utilities and shell scripts (.sh files) are not included in this documentation but are referenced with descriptions of their functionality.
