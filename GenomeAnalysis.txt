@@ -154,3 +154,24 @@ including array-based and next-generation sequence data, and genomic annotations
 --------------------------------------------------------------------------------------------------------------------
 
 Screenshots of the unique SNAP, AUGUSTUS, and MAKER genes can be found in the Genome Analysis folder.
+They will show genes that are predicted by AUGUSTUS, SNAP, and MAKER.
+
+SNAP+AUGUSTUGAgreedGene.png is the file we will be using for an external evidence spot check of the 
+genes validity.
+In IVG, the gene starts at 25,081 BP in the 19th contig, and ends on the 26,664th base pair.
+
+We can find evidence in our maker file of this with the command:
+grep "25081" MAKER_Bc395/Bc395-maker.gff3 | grep "contig19" | grep -E "maker|snap|augustus"
+
+This returns the following:
+Bc395_contig19  maker   gene    25081   26664   .       +       .       ID=snap-Bc395_contig19-processed-gene-0.51;Name=snap-Bc395_contig19-processed-gene-0.51
+Bc395_contig19  maker   mRNA    25081   26664   .       +       .       ID=snap-Bc395_contig19-processed-gene-0.51-mRNA-1;Parent=snap-Bc395_contig19-processed-gene-0.51;Name=snap-Bc395_contig19-processed-gene-0.51-mRNA-1;_AED=0.00;_eAED=0.00;_QI=0|-1|0|1|-1|1|1|0|527;_merge_warning=1
+Bc395_contig19  maker   exon    25081   26664   .       +       .       ID=snap-Bc395_contig19-processed-gene-0.51-mRNA-1:1;Parent=snap-Bc395_contig19-processed-gene-0.51-mRNA-1
+Bc395_contig19  maker   CDS     25081   26664   .       +       0       ID=snap-Bc395_contig19-processed-gene-0.51-mRNA-1:cds;Parent=snap-Bc395_contig19-processed-gene-0.51-mRNA-1
+Bc395_contig19  snap    match   25081   26664   191.573 +       .       ID=Bc395_contig19:hit:6661:4.5.0.0;Name=snap-Bc395_contig19-abinit-gene-0.51-mRNA-1;target_length=188350
+Bc395_contig19  snap    match_part      25081   26664   191.573 +       .       ID=Bc395_contig19:hsp:15461:4.5.0.0;Parent=Bc395_contig19:hit:6661:4.5.0.0;Target=snap-Bc395_contig19-abinit-gene-0.51-mRNA-1 1 1584 +;Gap=M1584
+Bc395_contig19  augustus        match   25081   26664   0.99    +       .       ID=Bc395_contig19:hit:6662:4.5.0.0;Name=augustus-Bc395_contig19-abinit-gene-0.3-mRNA-1;target_length=188350
+Bc395_contig19  augustus        match_part      25081   26664   0.99    +       .       ID=Bc395_contig19:hsp:15462:4.5.0.0;Parent=Bc395_contig19:hit:6662:4.5.0.0;Target=augustus-Bc395_contig19-abinit-gene-0.3-mRNA-1 1 1584 +;Gap=M1584
+
+As we can see there is evidence in our GFF to support the genome display given in the IGV window,
+as there are is a match that SNAP and AUGUSTUS notes.

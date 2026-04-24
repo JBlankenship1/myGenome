@@ -1,0 +1,37 @@
+RNA Sequencing Implementation Steps
+Jacob Blankenship
+Software: HISAT2, IGV
+
+Note: All code ran is done with my genome ID (Bc395, nicknamed "Bernard"). It is sometimes completed with a VM (which runs ubuntu)
+and other times is run on the University of Kentucky supercomputer MCC (any code that starts with sbatch is done
+on MCC as the execution is computationally intense). Some softwares utalized and some shell scripts that are 
+ran (.sh files) are not provided in this documentation, but general descriptions of what they do will be provided.
+Finally, some folder or file names could be renamed in between function runnings (such as a file being ran initialy
+as xyz.txt and later renamed and run again with x.txt)
+
+Build an indexed version of the Bc395 assembly for ultra-fast alignment
+Align reads from RNA extracted from P. oryzae strain FR13 grown in liquid culture (inCulture)
+as well as from from RNA extracts from lesions of P. oryzae strain SSID16 growing in rice leaves (inPlanta)
+We can then finally visualize the RNAseq read alignments in the IGV browser, along with the gene prediction tracks
+
+sbatch hisat2.sh Bc395_final.fasta FR13_inCulture.fastq.gz
+Command to build a HISAT2 genome index comparing Bc395 to a comparison genome (FR13).
+
+sbatch hisat2.sh Bc395_final.fasta SSID116_inPlanta.fastq.gz
+Command to build a HISAT2 genome index comparing Bc395 to a comparison genome (SSID16).
+
+This will return:
+SSID116_Bc395_hits.bam
+FR13_Bc395_hits.bam
+SSID116_Bc395_hits.bam.bai
+FR13_Bc395_hits.bam.bai  
+
+These are our alignment and index files when compared to Bc395. We can view these files in our IGV window.
+
+genes with predicted introns:
+do the RNAseq data support the placement of the predicted introns?
+are the introns spliced out 100% of the time?
+genes that are only expressed in culture
+genes that are only expressed in planta
+predicted genes with no evidence of expression
+are there any expressed genes that were not predicted?
