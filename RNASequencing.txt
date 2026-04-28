@@ -28,10 +28,18 @@ FR13_Bc395_hits.bam.bai
 
 These are our alignment and index files when compared to Bc395. We can view these files in our IGV window.
 
-genes with predicted introns:
-do the RNAseq data support the placement of the predicted introns?
-are the introns spliced out 100% of the time?
-genes that are only expressed in culture
-genes that are only expressed in planta
-predicted genes with no evidence of expression
-are there any expressed genes that were not predicted?
+Genes with predicted introns:
+    Yes many of the genes predicted introns are matching. image "RNA Sequencing"/IntronsFullySplicedOut.png
+Do the RNAseq data support the placement of the predicted introns?
+    Overall, yes. Introns are rarely out of prediction from the RNAseq predictions.
+Are the introns spliced out 100% of the time?
+    No, image "RNA Sequencing"/IntrongsNOTFullySplicedOut.png references an intron not fully spliced out of the 
+    expression
+Genes that are only expressed in culture?
+    Located in file "RNA Sequencing"/InPlantaONLYExpression.png
+Genes that are only expressed in planta?
+    Located in file "RNA Sequencing"/InCultureONLYExpression.png
+Predicted genes with no evidence of expression:
+    Located in file "RNA Sequencing"/GeneWithNOEvidenceOfExpression.png
+Are there any expressed genes that were not predicted?
+    Located in file "RNA Sequencing"/EvidenceOfExpressionWithNOGene.png

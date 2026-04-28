@@ -52,25 +52,20 @@ echo $(( $(wc -l < totalcontigs.txt) - $(wc -l < matchcontigs.txt) ))
 grep -Fxv -f matchcontigs.txt totalcontigs.txt
 Returns list of non-matching contigs
 
-
-awk -v OFS='\t' 'BEGIN{print "##gff-version 3"} !/^#/{if($9<$10){s=$9;e=$10;d="+"}else{s=$10;e=$9;d="-"} 
-print $2,"AWK","Blast",s,e,$12,d,".","ID="$2}' B71.MyBc395.BLAST > Bc395_B71_alignment.gff3
-
-awk -v OFS='\t' 'BEGIN{print "##gff-version 3"} !/^#/{if($7<$8){s=$7;e=$8;d="+"}else{s=$8;e=$7;d="-"} 
-print $1,"BLAST","match",s,e,$12,d,".","ID=" $2 ";Name=" $2}' Blast_Bc395/B71.MyBc395.BLAST > Bc395_B71_alignment_v2.gff3
-
 awk -v OFS='\t' 'BEGIN{print "##gff-version 3"} !/^#/{if($7<$8){s=$7;e=$8;d="+"}else{s=$8;e=$7;d="-"} 
 print $1,"AWK","match",s,e,$12,d,".","ID="$2}' B71.Bc395.BLAST > Bc395_B71_alignment_v3.gff3
-Right one ^
 
-
+The command above references the BLAST file and converts it's columns to the following:
 SEQID: SEQID of BLAST
 SOURCE: "AWK"
 TYPE: "Blast"
-START: Start of seq
-END: End of Seq
+START: Start of sequence in BLAST
+END: End of sequence in BLAST
 Score: SCORE of BLAST
-Strand: + or - depending on direction
-Phase: .
-Attributes: ID=contigXYZ (of the contig)
+Strand: + or - depending on direction of read
+Phase: "."
+Attributes: ID=contigXYZ (of the contig in BLAST)
+
+
+
 
