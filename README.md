@@ -65,7 +65,7 @@ Gene prediction and annotation using three complementary algorithms: SNAP, AUGUS
 - [WARNING] Overrepresented sequences
 - [ERROR] Adapter Content
 
-**Images:** `SummaryContentRaw.png`, `AdapterContentRaw.png`
+**Images:** Genome Trimming/`SummaryContentRaw.png`, Genome Trimming/`AdapterContentRaw.png`
 
 ### Trimmed Data Warnings
 - [WARNING] Per tile sequence quality
@@ -73,7 +73,7 @@ Gene prediction and annotation using three complementary algorithms: SNAP, AUGUS
 - [WARNING] Per sequence GC content
 - [WARNING] Sequence Length Distribution
 
-**Images:** `SummaryContentTrimmed.png`, `AdapterContentTrimmed.png`
+**Images:** Genome Trimming/`SummaryContentTrimmed.png`, Genome Trimming/`AdapterContentTrimmed.png`
 
 ## Additional Notes
 

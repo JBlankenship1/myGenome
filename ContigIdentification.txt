@@ -39,24 +39,32 @@ awk '$4/$3 >= 0.9 {print $2 ",mitochondrion"}' MoMitochondrion.Bc395.BLAST > Bc3
 This .csv file can now be submitted to NCBI, and is listed in the Mitochondiral Contig Identification folder.
 --------------------------------------------------------------------------------------------------------------------
 
+With our BLAST file, and a good idea on how our genome is structured, we can now compare and contrast it to a 
+similar genome of a comparable organism. This is with the B71v2sh reference genome. With the B71.fasta file,
+we can create a BLAST file that is the merged contigs between BC395 and B71v2sh:
+blastn -query B71.fasta -subject Bc395_final.fasta -evalue 1e-100 -outfmt 7 > B71.Bc395.BLAST
 
+Now to find how many contigs match, we can sum up the total contigs seen:
 awk '$2 ~ "contig" {sub(/~.*/, "", $2); print $2}' Blast_Bc395/B71.MyBc395.BLAST | sort -u > matchcontigs.txt
-1661
+Which returns 1661.
 
+We can also run two commands to find the total amount of contigs in Bc395 that don't match B71v2sh. To do this,
+we first can run:
 awk '/contig/ {gsub(/^>/, "", $1); sub(/~.*/, "", $1); print $1}' Bc395_Fasta_Files/Bc395_final.fasta | sort -u > totalcontigs.txt
-2991
-
+This returns 2991, which is the total contigs in our genome. We then can run:
 echo $(( $(wc -l < totalcontigs.txt) - $(wc -l < matchcontigs.txt) ))
-1330
-
+Which returns 1330, is is the difference in contigs between our two genomes. However, this is just a number, to get
+and actual list of the contigs, we can run:
 grep -Fxv -f matchcontigs.txt totalcontigs.txt
-Returns list of non-matching contigs
+--------------------------------------------------------------------------------------------------------------------
 
-awk -v OFS='\t' 'BEGIN{print "##gff-version 3"} !/^#/{if($7<$8){s=$7;e=$8;d="+"}else{s=$8;e=$7;d="-"} 
-print $1,"AWK","match",s,e,$12,d,".","ID="$2}' B71.Bc395.BLAST > Bc395_B71_alignment_v3.gff3
+With our matches, we next need to convert our blast file into a gff3 file. This is to give us the ability to view
+the genome matches between Bc395 (with Bc395_final.fasta) and B71 (which we will generate with the command below): 
+awk -v OFS='\t' 'BEGIN{print "##gff-version 3"; id=1} !/^#/{if($7<$8){s=$7;e=$8;d="+"}else{s=$8;e=$7;d="-"} 
+print $1,"AWK","match",s,e,$12,d,".","ID=match"id; id++}' Blast_Bc395/B71.Bc395.BLAST > Bc395_B71_alignment.gff3
 
 The command above references the BLAST file and converts it's columns to the following:
-SEQID: SEQID of BLAST
+SEQID: Incremental ID to maintain uniqueness
 SOURCE: "AWK"
 TYPE: "Blast"
 START: Start of sequence in BLAST
@@ -66,6 +74,6 @@ Strand: + or - depending on direction of read
 Phase: "."
 Attributes: ID=contigXYZ (of the contig in BLAST)
 
-
-
-
+We can then load our B71.fasta file as our genome in IGV, and use our Bc395_B71_alignment.gff3 as our track to see
+where in our B71 genome our Bc395 genome aligns. A screenshot of this view can be seen in 
+Contig Identification\Bc395_B71_GenomeAlignment.png
