@@ -2,8 +2,7 @@
 
 **Author:** Jacob Blankenship  
 **Software:** Velvet, Spades, Bandage
-
-> **Note:** All code ran is done with my genome ID (Bc395). It is sometimes completed with a VM (which runs Ubuntu) and other times is run on the University of Kentucky supercomputer MCC (any code that starts with `sbatch` is done on MCC as the execution is computationally intense). Some software utilized and some shell scripts that are ran (`.sh` files) are not provided in this documentation, but general descriptions of what they do will be provided. Finally, some folder or file names could be renamed in between function runnings (such as a file being ran initially as `xyz.txt` and later renamed and run again with `x.txt`).
+**Genome ID:** Bc395
 
 ---
 
@@ -111,7 +110,11 @@ sbatch GenomePostProcess.sh Bc395_newheader.fasta
 
 This produces the final submission-ready file: **`Bc395_final.fasta`**.
 
----
+We can view this fasta file, and the specific contigs and how they are connected, with BANDAGE:
+
+![Optimal Genome Focused Node 999808](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/Genome%20Assembly/OptimalGenomeFocusedNode999808.png) - Optimal Genome Focused Node 999808
+
+![Optimal Genome Full](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/Genome%20Assembly/OptimalGenomeFull.png) - Optimal Genome Full
 
 ## Step 4 — BUSCO Scoring
 

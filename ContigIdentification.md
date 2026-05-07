@@ -2,8 +2,7 @@
 
 **Author:** Jacob Blankenship  
 **Software:** BLAST  
-
-> **Note:** All code ran is done with my genome ID (**Bc395**)[cite: 1]. It is sometimes completed with a VM (which runs Ubuntu) and other times is run on the University of Kentucky supercomputer **MCC** (any code that starts with `sbatch` is done on MCC as the execution is computationally intense)[cite: 1]. Some software utilized and some shell scripts that are ran (`.sh` files) are not provided in this documentation, but general descriptions of what they do will be provided[cite: 1]. Finally, some folder or file names could be renamed in between function runnings[cite: 1].
+**Genome ID:** Bc395
 
 ---
 
@@ -74,6 +73,6 @@ print $1,"AWK","match",s,e,$12,d,".","ID=match"id; id++}' Blast_Bc395/B71.Bc395.
 ```
 
 ### IGV Visualization
-The `B71.fasta` file is loaded as the reference genome in IGV, with the `Bc395_B71_alignment.gff3` file serving as the alignment track to visualize where the **Bc395** genome aligns[cite: 1].
+The `B71.fasta` file is loaded as the reference genome in IGV, with the `Bc395_B71_alignment.gff3` file serving as the alignment track to visualize where the **Bc395** genome align.
 
-> **Screenshot Reference**: `Contig Identification\Bc395_B71_GenomeAlignment.png`[cite: 1]
+ **Screenshot Reference**: ![Contig Identification](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/Contig%20Identification/Bc395_B71_GenomeAlignment.png) - Example of Bc395 & B71 Genome Alignment

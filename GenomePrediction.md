@@ -2,8 +2,7 @@
 
 **Author:** Jacob Blankenship  
 **Software:** SNAP, AUGUSTUS, MAKER, IGV
-
-> **Note:** All code ran is done with my genome ID (**Bc395**). It is sometimes completed with a VM (which runs Ubuntu) and other times is run on the University of Kentucky supercomputer **MCC** (any code that starts with `sbatch` is done on MCC as the execution is computationally intense). Some software utilized and some shell scripts that are ran (`.sh` files) are not provided in this documentation, but general descriptions of what they do will be provided. Finally, some folder or file names could be renamed in between function runnings (such as a file being ran initially as `xyz.txt` and later renamed and run again with `x.txt`).
+**Genome ID:** Bc395
 
 ---
 
@@ -109,7 +108,14 @@ The unique gene counts for each prediction method were determined using speciali
 ### IGV Visualization & Spot Check
 The **Integrative Genomics Viewer (IGV)** facilitates the interactive exploration of genomic datasets. A spot check conducted on **Contig 19** (Coordinates: 25,081–26,664 BP) validated the agreement between prediction models.
 
->  **Image Reference:** `Genome Analysis/SNAP+AUGUSTUGAgreedGene.png`
+**Image Reference:** 
+![SNAP & AUGUSTUs Agreed Gene](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/Genome%20Prediction/SNAP+AUGUSTUSAgreedGene.png) - SNAP & AUGUSTUs Agreed Gene
+
+![SNAP & AUGUSTUS Disagreed Gene](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/Genome%20Prediction/SNAP+AUGUSTUSDisagreedGene.png) - SNAP & AUGUSTUS Disagreed Gene
+
+![SNAP Only Gene](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/Genome%20Prediction/SNAPOnlyGene.png) - SNAP Only Gene
+
+![AUGUSTUS Only Gene](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/Genome%20Prediction/AUGUSTUSOnlyGene.png) - AUGUSTUS Only Gene
 
 **Validation Evidence:**
 The following query confirms that the consensus MAKER model (`ID=snap-Bc395_contig19-processed-gene-0.51`) is supported by underlying SNAP and AUGUSTUS matches:

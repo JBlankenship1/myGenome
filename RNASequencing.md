@@ -1,9 +1,8 @@
 # RNA Sequencing Implementation Steps
 
 **Author:** Jacob Blankenship  
-**Software:** HISAT2, IGV  
-
-> **Note:** All code ran is done with my genome ID (Bc395, nicknamed "Bernard"). It is sometimes completed with a VM (which runs ubuntu) and other times is run on the University of Kentucky supercomputer MCC (any code that starts with `sbatch` is done on MCC as the execution is computationally intense). Some softwares utalized and some shell scripts that are ran (`.sh` files) are not provided in this documentation, but general descriptions of what they do will be provided. Finally, some folder or file names could be renamed in between function runnings (such as a file being ran initialy as `xyz.txt` and later renamed and run again with `x.txt`).
+**Software:** HISAT2, IGV
+**Genome ID:** Bc395
 
 ---
 
@@ -43,19 +42,22 @@ We can then finally visualize the RNAseq read alignments in the IGV browser, alo
 
 **Do the RNAseq data support the placement of the predicted introns?**
 Overall, yes. Introns are rarely out of prediction from the RNAseq predictions. Many of the genes' predicted introns are matching.
->  **Image Reference:** `"RNA Sequencing"/IntronsFullySplicedOut.png`
+**Image Reference:** ![IntronsFullySplicedOut](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/RNA%20Sequencing/IntronsFullySplicedOut.png) - Introns Fully Spliced Out
 
 **Are the introns spliced out 100% of the time?**
 No, there is evidence of an intron not fully spliced out of the expression.
->  **Image Reference:** `"RNA Sequencing"/IntrongsNOTFullySplicedOut.png`
+**Image Reference:** ![IntronsNOTFullySplicedOut](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/RNA%20Sequencing/IntronsNOTFullySplicedOut.png) - Introns Not Fully Spliced Out
 
-### Expression Profiles
+---
+
+## Step 3 — Expression Profiles Wtih Image Reference
 
 Below are the findings based on evidence of expression across the different environments:
 
-| Query | Image Reference |
-|-------|-----------------|
-| Genes that are only expressed in culture | `"RNA Sequencing"/InPlantaONLYExpression.png` |
-| Genes that are only expressed in planta | `"RNA Sequencing"/InCultureONLYExpression.png` |
-| Predicted genes with no evidence of expression | `"RNA Sequencing"/GeneWithNOEvidenceOfExpression.png` |
-| Expressed genes that were not predicted | `"RNA Sequencing"/EvidenceOfExpressionWithNOGene.png` |
+![InCultureONLYExpression](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/RNA%20Sequencing/InCultureONLYExpression.png) - Genes that are only expressed in culture
+
+![InPlantaONLYExpression](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/RNA%20Sequencing/InPlantaONLYExpression.png) - Genes that are only expressed in planta
+
+![GeneWithNOEvidenceOfExpression.png](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/RNA%20Sequencing/GeneWithNOEvidenceOfExpression.png) - Predicted genes with no evidence of expression
+
+![EvidenceOfExpressionWithNOGene](https://raw.githubusercontent.com/JBlankenship1/myGenome/main/RNA%20Sequencing/EvidenceOfExpressionWithNOGene.png) - Expressed genes that were not predicted
