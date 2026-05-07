@@ -20,7 +20,8 @@ singularity run --app blast2120 /share/singularity/images/ccs/conda/amd-conda1-c
 ```
 
 ### Filtering Results
-The BLAST file is simplified to isolate contigs where the mitochondrial genome represents **90% or more** of the total length[cite: 1]. This filtered data is written to a `.csv` file for NCBI submission[cite: 1].
+The BLAST file is simplified to isolate contigs where the mitochondrial genome represents **90% or more** of the total length. This filtered data is written to a `.csv` file for NCBI submission and
+located in `Contig Identification\Bc395_mitochondrion.csv`.
 
 ```bash
 awk '$4/$3 >= 0.9 {print $2 ",mitochondrion"}' MoMitochondrion.Bc395.BLAST > Bc395_mitochondrion.csv
